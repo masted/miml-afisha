@@ -1,0 +1,17 @@
+.list .title {
+height: 45px;
+display: table;
+}
+.list .date,
+.list .tit {
+display: table-cell;
+vertical-align: middle;
+}
+.list .tit {
+padding-left: 7px;
+}
+.list .date {
+font-size: 12px;
+width: 50px;
+border-right: 1px solid #ccc;
+}
