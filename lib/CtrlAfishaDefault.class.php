@@ -32,14 +32,12 @@ class CtrlAfishaDefault extends CtrlMimlList {
   function action_default() {
     $items = $this->items();
     $items->setN(100);
-    $this->d['items'] = $_items = $items->getItems();
-    $this->d['body'] = Tt()->getTpl('afisha/list', $this->d);
-    //
-    $items->cond->setOrder('eventDate DESC, eventTime');
-    $_items = $items->getItems();
     $this->d['today'] = $this->setFilterDate(date('j;n;Y'), 'eventDate', true);
+    $items->cond->setOrder('eventDate DESC, eventTime');
+    $this->d['items'] = $items->getItems();
+    $this->d['body'] = Tt()->getTpl('afisha/list', $this->d);
     if ($this->day) {
-      $cnt = ' ('.count($_items).' шт.)';
+      $cnt = ' ('.count($this->d['items']).' шт.)';
       if (in_array('dateCreate', $this->items->cond->filterKeys) and $this->day == date('j') and $this->month == date('n') and $this->year == date('Y')) {
         $this->setPageTitle('Добавлено сегодня'.$cnt);
       }
@@ -60,17 +58,19 @@ class CtrlAfishaDefault extends CtrlMimlList {
        'link' => '/afisha'
     ];
     // special mobile calendar data
-//    $calendar = new AfishaCalendar('');
-//    $month = $this->month ?: date('n');
-//    $year = $this->year ?: date('Y');
-//    $r = $calendar->getDaysDataExists($month, $year);
-//    sort($r);
-//    foreach ($r as $day) {
-//      $this->d['menu'][] = [
-//        'title' => "$day ".Config::getVar('ruMonths2')[$month],
-//        'link'  => "/afisha/d.$day;$month;$year"
-//      ];
-//    }
+    $calendar = new DdCalendar('afisha', $this->req->path(0, 1));
+    $month = $this->month ?: date('n');
+    $year = $this->year ?: date('Y');
+    $r = $calendar->getDaysDataExists($month, $year);
+    sort($r);
+    $currentDay = date('d');
+    foreach ($r as $day) {
+      if ($day < $currentDay) continue;
+      $this->d['menu'][] = [
+        'title' => "$day ".Config::getVar('ruMonths2')[$month],
+        'link'  => "/afisha/d.$day;$month;$year"
+      ];
+    }
   }
 
 }
