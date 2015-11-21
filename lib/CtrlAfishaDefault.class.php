@@ -31,6 +31,11 @@ class CtrlAfishaDefault extends CtrlMimlList {
 
   function action_default() {
     $items = $this->items();
+    $baseProjectName = 'nnway';
+    $projects = require NGN_ENV_PATH.'/config/projects.php';
+    $baseDomain = Arr::getSubValue($projects, 'name', $baseProjectName, 'domain');
+    $items->options['filesRoot'] = NGN_ENV_PATH.'/projects/'.$baseProjectName.'/u';
+    $items->options['filesRootUrl'] = 'http://'.$baseDomain.'/u';
     $items->setN(100);
     $this->d['today'] = $this->setFilterDate(date('j;n;Y'), 'eventDate', true);
     $items->cond->setOrder('eventDate DESC, eventTime');
