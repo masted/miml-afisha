@@ -1,3 +1,4 @@
+<?//die2($d['items'])?>
 <style>
 .list .title {
 height: 45px;
